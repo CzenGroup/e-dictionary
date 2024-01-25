@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-dictionary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        header {
+            text-align: center;
+            background-color: #f2f2f2;
+            padding: 10px;
+        }
+        main {
+            margin-top: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        dl {
+            padding: 0;
+            margin: 0;
+        }
+        dt {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        dd {
+            margin-bottom: 10px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>e-dictionary</h1>
+    </header>
+
+    <main>
+        <input type="text" id="searchInput" placeholder="Search for a word">
+        <button onclick="searchDictionary()">Search</button>
+
+        <h2>Word Definitions</h2>
+
+        <dl id="dictionaryList">
+            <!-- Words and definitions will be added dynamically with JavaScript -->
+        </dl>
+    </main>
+
+    <script>
+        const dictionary = [
+            // Please continue adding more words and their meanings as needed
+            // ...
+            { word: "the", englishDefinition: "Denoting one or more people or things already mentioned or assumed to be common knowledge.", hindiDefinition: "पहले से ही उल्लिखित या सामान्य ज्ञान के रूप में माना जाने वाला व्यक्ति या वस्तु को सूचित करता है।" },
+            { word: "and", englishDefinition: "Used to connect words of the same part of speech, clauses, or sentences that are to be taken jointly.", hindiDefinition: "एक ही भाषा के शब्दों, शांतियों या वाक्यों को जोड़ने के लिए उपयोग किया जाता है जो समूह से लिए जाने वाले हैं।" },
+            // Add more words...
+
+            // Words you provided
+            { word: "to", englishDefinition: "Expressing motion in the direction of (a particular location).", hindiDefinition: "(एक विशिष्ट स्थान की) दिशा में गति व्यक्त करने के लिए उपयोग होना।" },
+            { word: "of", englishDefinition: "Expressing the relationship between a part and a whole.", hindiDefinition: "एक भाग और सम्पूर्ण के बीच संबंध को व्यक्त करने के लिए उपयोग होना।" },
+            { word: "a", englishDefinition: "Used when mentioning someone or something for the first time.", hindiDefinition: "पहली बार किसी को या कुछ को उल्लेख करने पर उपयोग होना।" },
+            { word: "in", englishDefinition: "Expressing the situation of something that is or appears to be enclosed or surrounded by something else.", hindiDefinition: "एक ऐसे किसी चीज की स्थिति को व्यक्त करना जो कुछ और द्वारा घेरा गया है या ऐसा दिखाई देता है।" },
+            { word: "is", englishDefinition: "Third person singular present of 'be'; exist.", hindiDefinition: "'be' की तीसरी व्यक्ति एकवचन वर्तमान; मौजूद होना।" },
+            // Continue adding more words...
+
+            { word: "it", englishDefinition: "Used to represent a thing or situation already mentioned or understood.", hindiDefinition: "पहले ही उल्लिखित या समझी जाने वाली एक वस्तु या परिस्थिति को प्रतिष्ठित करने के लिए उपयोग होता है।" },
+            { word: "you", englishDefinition: "Used to refer to the person or people that the speaker is addressing.", hindiDefinition: "उस व्यक्ति या लोग को संदर्भित करने के लिए उपयोग होता है जिससे वक्ता बातचीत कर रहा है।" },
+            { word: "that", englishDefinition: "Used to identify a specific person or thing observed or heard by the speaker.", hindiDefinition: "उपयोगकर्ता द्वारा देखे या सुने गए किसी विशिष्ट व्यक्ति या वस्तु की पहचान के लिए उपयोग होता है।" },
+            { word: "he", englishDefinition: "Used to refer to a male person or animal previously mentioned or easily identified.", hindiDefinition: "पहले से ही उल्लिखित या आसानी से पहचाने जाने वाले पुरुष व्यक्ति या जानवर को संदर्भित करने के लिए उपयोग होता है।" },
+            { word: "was", englishDefinition: "Past tense of 'be'; existed.", hindiDefinition: "'be' की भूतकालीन रूप; मौजूद था।" },
+            { word: "for", englishDefinition: "In support of or in favor of a person or policy.", hindiDefinition: "किसी व्यक्ति या नीति के समर्थन में या पक्ष में।" },
+            // Continue adding more words...
+
+            { word: "on", englishDefinition: "Physically in contact with and supported by a surface.", hindiDefinition: "किसी सतह से शारीरिक रूप से संपर्क में और समर्थित।" },
+            { word: "are", englishDefinition: "Second person singular and plural present of 'be'; exist.", hindiDefinition: "दूसरी व्यक्ति एकवचन और बहुवचन वर्तमान में 'be'; मौजूद है।" },
+            { word: "with", englishDefinition: "Accompanied by; having.", hindiDefinition: "के साथ; होने वाला।" },
+            { word: "as", englishDefinition: "Used in comparisons to refer to the extent or degree of something.", hindiDefinition: "तुलनाओं में उपयोग होता है जिससे कुछ की मात्रा या उम्मीद को संदर्भित किया जाए।" },
+            { word: "I", englishDefinition: "Used by a speaker to refer to himself or herself.", hindiDefinition: "उपयोगकर्ता द्वारा अपने आप को संदर्भित करने के लिए उपयोग किया जाता है।" },
+            { word: "his", englishDefinition: "Belonging to or associated with a male person or animal previously mentioned.", hindiDefinition: "पहले से ही उल्लिखित पुरुष व्यक्ति या जानवर से संबंधित या जुड़ा हुआ।" },
+            // Continue adding more words...
+
+            { word: "they", englishDefinition: "Used to refer to two or more people or things previously mentioned or easily identified.", hindiDefinition: "पहले से ही उल्लिखित या आसानी से पहचाने जाने वाले दो या दो से अधिक व्यक्ति या वस्तुओं को संदर्भित करने के लिए उपयोग होता है।" },
+            { word: "be", englishDefinition: "Exist or live.", hindiDefinition: "मौजूद है या जी रहा है।" },
+            { word: "at", englishDefinition: "Expressing location or arrival in a particular place or position.", hindiDefinition: "किसी विशिष्ट स्थान या स्थिति में स्थिति या पहुंच को व्यक्त करने के लिए।" },
+            { word: "one", englishDefinition: "The number denoting the sum of a single unit.", hindiDefinition: "एकल इकाई के योग को दर्शाने वाली संख्या।" },
+            { word: "have", englishDefinition: "Possess, own, or hold.", hindiDefinition: "स्वामित्व, स्वामित्व, या संज्ञान में रखना।" },
+            // Continue adding more words...
+
+        ];
+
+        const dictionaryList = document.getElementById("dictionaryList");
+
+        function searchDictionary() {
+            const searchInput = document.getElementById("searchInput").value.toLowerCase();
+            const filteredWords = dictionary.filter(entry => entry.word.toLowerCase().includes(searchInput));
+
+            displayResults(filteredWords);
+        }
+
+        function displayResults(results) {
+            dictionaryList.innerHTML = "";
+
+            if (results.length === 0) {
+                dictionaryList.innerHTML = "<p>No matching words found.</p>";
+                return;
+            }
+
+            results.forEach(entry => {
+                const dt = document.createElement("dt");
+                dt.textContent = entry.word;
+
+                const dd = document.createElement("dd");
+                dd.innerHTML = `<strong>English:</strong> ${entry.englishDefinition}<br><strong>Hindi:</strong> ${entry.hindiDefinition}`;
+
+                dictionaryList.appendChild(dt);
+                dictionaryList.appendChild(dd);
+            });
+        }
+
+        // Initial display of all words
+        displayResults(dictionary);
+    </script>
+
+</body>
+</html>
