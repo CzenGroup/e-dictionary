@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        header {
+            text-align: center;
+            background-color: #f2f2f2;
+            padding: 10px;
+        }
+        main {
+            margin-top: 20px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        p {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Simple Translator</h1>
+    </header>
+
+    <main>
+        <label for="inputText">Enter English Text:</label>
+        <textarea id="inputText" placeholder="Type or paste English text"></textarea>
+
+        <button onclick="translateText()">Translate</button>
+
+        <div id="translations">
+            <p id="outputTextEnglish">English Translation: </p>
+            <p id="outputTextHindi">Hindi Translation: </p>
+            <!-- Add more language translations as needed -->
+        </div>
+    </main>
+
+    <script>
+        const translations = {
+            'hello': 'नमस्ते',
+            'world': 'दुनिया',
+            'good': 'अच्छा',
+            'morning': 'सुबह',
+            'night': 'रात',
+            'cat': 'बिल्ली',
+            'dog': 'कुत्ता',
+            'sun': 'सूरज',
+            'moon': 'चंद्रमा',
+            'water': 'पानी',
+            'flower': 'फूल',
+            'tree': 'पेड़',
+            'mountain': 'पहाड़',
+            // Add more word translations as needed
+        };
+
+        function translateText() {
+            const inputText = document.getElementById("inputText").value.toLowerCase();
+            const words = inputText.split(/\s+/);
+
+            const translatedWords = words.map(word => translations[word] || word);
+
+            const translatedText = translatedWords.join(' ');
+
+            document.getElementById("outputTextEnglish").textContent = `English Translation: ${inputText}`;
+            document.getElementById("outputTextHindi").textContent = `Hindi Translation: ${translatedText}`;
+            // Update other translations as needed
+        }
+    </script>
+
+</body>
+</html>
